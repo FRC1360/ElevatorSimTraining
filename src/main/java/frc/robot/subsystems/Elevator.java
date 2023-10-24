@@ -33,12 +33,17 @@ public class Elevator implements AutoCloseable {
   // This gearbox represents a gearbox containing 4 Vex 775pro motors.
   private final DCMotor m_elevatorGearbox = DCMotor.getVex775Pro(4);
 
+
+  public static double kElevatorKp = 5;
+  public static double kElevatorKi = 0;
+  public static double kElevatorKd = 0;
+
   // Standard classes for controlling our elevator
   private final ProfiledPIDController m_controller =
       new ProfiledPIDController(
-          Constants.kElevatorKp,
-          Constants.kElevatorKi,
-          Constants.kElevatorKd,
+          kElevatorKp,
+          kElevatorKi,
+          kElevatorKd,
           new TrapezoidProfile.Constraints(2.45, 2.45));
   ElevatorFeedforward m_feedforward =
       new ElevatorFeedforward(
@@ -90,6 +95,14 @@ public class Elevator implements AutoCloseable {
   /** Advance the simulation. */
   public void simulationPeriodic() {
 
+    SmartDashboard.putNumber("kElevatorKp", kElevatorKp);
+    SmartDashboard.putNumber("kElevatorKi", kElevatorKi);
+    SmartDashboard.putNumber("kElevatorKd", kElevatorKd);
+
+    kElevatorKp = SmartDashboard.getNumber("kElevatorKp", kElevatorKp);
+    kElevatorKi = SmartDashboard.getNumber("kElevatorKi", kElevatorKi);
+    kElevatorKd = SmartDashboard.getNumber("kElevatorKd", kElevatorKd);
+
     REVPhysicsSim.getInstance().run();
     // In this method, we update our simulation of what our elevator is doing
     // First, we set our "inputs" (voltages)
@@ -113,7 +126,7 @@ public class Elevator implements AutoCloseable {
 
     // With the setpoint value we run PID control like normal
     double pidOutput = m_controller.calculate(m_encoder.getPosition());
-    double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
+    double feedforwardOutput = 0;//m_feedforward.calculate(m_controller.getSetpoint().velocity);
     m_motor.setVoltage(pidOutput + feedforwardOutput);
   }
 
