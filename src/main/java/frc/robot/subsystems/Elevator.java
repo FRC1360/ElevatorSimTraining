@@ -77,6 +77,10 @@ public class Elevator implements AutoCloseable {
   /** Subsystem constructor. */
   public Elevator() {
 
+    SmartDashboard.putNumber("kElevatorKp", kElevatorKp);
+    SmartDashboard.putNumber("kElevatorKi", kElevatorKi);
+    SmartDashboard.putNumber("kElevatorKd", kElevatorKd);
+
     if (RobotBase.isSimulation()) {
       REVPhysicsSim.getInstance().addSparkMax(m_motor, DCMotor.getNEO(1));
     }
@@ -95,13 +99,15 @@ public class Elevator implements AutoCloseable {
   /** Advance the simulation. */
   public void simulationPeriodic() {
 
-    SmartDashboard.putNumber("kElevatorKp", kElevatorKp);
-    SmartDashboard.putNumber("kElevatorKi", kElevatorKi);
-    SmartDashboard.putNumber("kElevatorKd", kElevatorKd);
-
     kElevatorKp = SmartDashboard.getNumber("kElevatorKp", kElevatorKp);
     kElevatorKi = SmartDashboard.getNumber("kElevatorKi", kElevatorKi);
     kElevatorKd = SmartDashboard.getNumber("kElevatorKd", kElevatorKd);
+
+  //  m_controller.setP(kElevatorKp);
+  //  m_controller.setD(kElevatorKd);
+  //  m_controller.setI(kElevatorKi);
+
+    SmartDashboard.putNumber("pos", m_encoder.getPosition());
 
     REVPhysicsSim.getInstance().run();
     // In this method, we update our simulation of what our elevator is doing
