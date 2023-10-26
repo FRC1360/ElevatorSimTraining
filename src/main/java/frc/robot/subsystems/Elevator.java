@@ -27,12 +27,16 @@ public class Elevator implements AutoCloseable {
   // This gearbox represents a gearbox containing 4 Vex 775pro motors.
   private final DCMotor m_elevatorGearbox = DCMotor.getVex775Pro(4);
 
+  public double m_ElevatorKp = 5;
+  public double m_ElevatorKi = 0;
+  public double m_ElevatorKd = 0;
+
   // Standard classes for controlling our elevator
   private final ProfiledPIDController m_controller =
       new ProfiledPIDController(
-          Constants.kElevatorKp,
-          Constants.kElevatorKi,
-          Constants.kElevatorKd,
+          m_ElevatorKp,
+          m_ElevatorKi,
+          m_ElevatorKd,
           new TrapezoidProfile.Constraints(2.45, 2.45));
   ElevatorFeedforward m_feedforward =
       new ElevatorFeedforward(
@@ -67,6 +71,10 @@ public class Elevator implements AutoCloseable {
 
   /** Subsystem constructor. */
   public Elevator() {
+    SmartDashboard.putNumber("m_kElevatorKp", m_ElevatorKp);
+    SmartDashboard.putNumber("m_kElevatorKi", m_ElevatorKi);
+    SmartDashboard.putNumber("m_kElevatorKd", m_ElevatorKd);
+
     m_encoder.setDistancePerPulse(Constants.kElevatorEncoderDistPerPulse);
 
     // Publish Mechanism2d to SmartDashboard
@@ -76,6 +84,14 @@ public class Elevator implements AutoCloseable {
 
   /** Advance the simulation. */
   public void simulationPeriodic() {
+    m_ElevatorKp = SmartDashboard.getNumber("m_kElevatorKp", m_ElevatorKp);
+    m_ElevatorKi = SmartDashboard.getNumber("m_kElevatorKi", m_ElevatorKi);
+    m_ElevatorKd = SmartDashboard.getNumber("m_kElevatorKd", m_ElevatorKd);
+
+    m_controller.setP(m_ElevatorKp);
+    m_controller.setI(m_ElevatorKi);
+    m_controller.setD(m_ElevatorKd);
+
     // In this method, we update our simulation of what our elevator is doing
     // First, we set our "inputs" (voltages)
     m_elevatorSim.setInput(m_motorSim.getSpeed() * RobotController.getBatteryVoltage());
