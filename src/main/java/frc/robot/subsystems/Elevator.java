@@ -37,6 +37,7 @@ public class Elevator implements AutoCloseable {
   public static double kElevatorKp = 5;
   public static double kElevatorKi = 0;
   public static double kElevatorKd = 0;
+  public static double kSetpointMeters = 0.75;
 
   // Standard classes for controlling our elevator
   private final ProfiledPIDController m_controller =
@@ -98,10 +99,14 @@ public class Elevator implements AutoCloseable {
     SmartDashboard.putNumber("kElevatorKp", kElevatorKp);
     SmartDashboard.putNumber("kElevatorKi", kElevatorKi);
     SmartDashboard.putNumber("kElevatorKd", kElevatorKd);
+    SmartDashboard.putNumber("kSetpointMeters", kSetpointMeters);
 
     kElevatorKp = SmartDashboard.getNumber("kElevatorKp", kElevatorKp);
     kElevatorKi = SmartDashboard.getNumber("kElevatorKi", kElevatorKi);
     kElevatorKd = SmartDashboard.getNumber("kElevatorKd", kElevatorKd);
+    kSetpointMeters = SmartDashboard.getNumber("kSetpointMeters", kSetpointMeters);
+
+    reachGoal(kSetpointMeters);
 
     REVPhysicsSim.getInstance().run();
     // In this method, we update our simulation of what our elevator is doing
