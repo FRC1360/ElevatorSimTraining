@@ -30,7 +30,8 @@ public class Elevator implements AutoCloseable {
   public double m_ElevatorKp = 5;
   public double m_ElevatorKi = 0;
   public double m_ElevatorKd = 0;
-
+  public double m_SetpointMeters = 0.75;
+  public double Error = 0;
   // Standard classes for controlling our elevator
   private final ProfiledPIDController m_controller =
       new ProfiledPIDController(
@@ -74,9 +75,8 @@ public class Elevator implements AutoCloseable {
     SmartDashboard.putNumber("m_kElevatorKp", m_ElevatorKp);
     SmartDashboard.putNumber("m_kElevatorKi", m_ElevatorKi);
     SmartDashboard.putNumber("m_kElevatorKd", m_ElevatorKd);
-
+    SmartDashboard.putNumber("m_SetpointMeters", m_SetpointMeters);
     m_encoder.setDistancePerPulse(Constants.kElevatorEncoderDistPerPulse);
-
     // Publish Mechanism2d to SmartDashboard
     // To view the Elevator visualization, select Network Tables -> SmartDashboard -> Elevator Sim
     SmartDashboard.putData("Elevator Sim", m_mech2d);
@@ -87,11 +87,14 @@ public class Elevator implements AutoCloseable {
     m_ElevatorKp = SmartDashboard.getNumber("m_kElevatorKp", m_ElevatorKp);
     m_ElevatorKi = SmartDashboard.getNumber("m_kElevatorKi", m_ElevatorKi);
     m_ElevatorKd = SmartDashboard.getNumber("m_kElevatorKd", m_ElevatorKd);
+    m_SetpointMeters = SmartDashboard.getNumber("m_SetpointMeters", m_SetpointMeters);
+    
+    Error = (m_SetpointMeters - m_encoder.getDistance());
+    SmartDashboard.putNumber("Error", Error);
 
     m_controller.setP(m_ElevatorKp);
     m_controller.setI(m_ElevatorKi);
     m_controller.setD(m_ElevatorKd);
-
     // In this method, we update our simulation of what our elevator is doing
     // First, we set our "inputs" (voltages)
     m_elevatorSim.setInput(m_motorSim.getSpeed() * RobotController.getBatteryVoltage());
