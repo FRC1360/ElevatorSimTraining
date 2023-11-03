@@ -33,11 +33,10 @@ public class Elevator implements AutoCloseable {
   // This gearbox represents a gearbox containing 4 Vex 775pro motors.
   private final DCMotor m_elevatorGearbox = DCMotor.getVex775Pro(4);
 
-
-  public static double kElevatorKp = 5;
-  public static double kElevatorKi = 0;
-  public static double kElevatorKd = 0;
-  public static double kSetpointMeters = 0.75;
+  public double kElevatorKp = 5;
+  public double kElevatorKi = 0;
+  public double kElevatorKd = 0;
+  public double kSetpointMeters = 0.75;
 
   // Standard classes for controlling our elevator
   private final ProfiledPIDController m_controller =
