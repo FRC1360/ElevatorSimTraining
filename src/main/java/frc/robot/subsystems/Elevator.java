@@ -106,7 +106,7 @@ public class Elevator implements AutoCloseable {
     kElevatorKd = SmartDashboard.getNumber("kElevatorKd", kElevatorKd);
     kSetpointMeters = SmartDashboard.getNumber("kSetpointMeters", kSetpointMeters);
 
-    reachGoal(kSetpointMeters);
+    //reachGoal(kSetpointMeters);
 
     REVPhysicsSim.getInstance().run();
     // In this method, we update our simulation of what our elevator is doing
