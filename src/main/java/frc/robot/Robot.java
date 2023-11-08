@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Elevator;
 
@@ -14,6 +15,7 @@ public class Robot extends TimedRobot {
   private final Joystick m_joystick = new Joystick(Constants.kJoystickPort);
   private final Elevator m_elevator = new Elevator();
   private double vSetpointMeters = 0.75;
+  private final XboxController exampleXbox = new XboxController(0);
 
   @Override
   public void robotInit() {
@@ -35,7 +37,13 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     vSetpointMeters = SmartDashboard.getNumber("vSetpointMeters", vSetpointMeters);
-    m_elevator.reachGoal(vSetpointMeters);
+    if (exampleXbox.getRawButtonPressed(0)){
+      m_elevator.reachGoal(vSetpointMeters);
+    }
+    else {
+      m_elevator.reachGoal(0);
+    }
+    
   }
 
   @Override
