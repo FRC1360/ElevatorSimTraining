@@ -10,6 +10,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
@@ -32,6 +33,9 @@ public class Elevator implements AutoCloseable {
   public double m_ElevatorKd = 0;
   public double m_SetpointMeters = 0.75;
   public double Error = 0;
+
+  public void loadPreferences() {
+  }
   // Standard classes for controlling our elevator
   private final ProfiledPIDController m_controller =
       new ProfiledPIDController(
@@ -72,11 +76,11 @@ public class Elevator implements AutoCloseable {
 
   /** Subsystem constructor. */
   public Elevator() {
-    SmartDashboard.putNumber("m_kElevatorKp", m_ElevatorKp);
-    SmartDashboard.putNumber("m_kElevatorKi", m_ElevatorKi);
-    SmartDashboard.putNumber("m_kElevatorKd", m_ElevatorKd);
+
     SmartDashboard.putNumber("m_SetpointMeters", m_SetpointMeters);
     m_encoder.setDistancePerPulse(Constants.kElevatorEncoderDistPerPulse);
+
+
     // Publish Mechanism2d to SmartDashboard
     // To view the Elevator visualization, select Network Tables -> SmartDashboard -> Elevator Sim
     SmartDashboard.putData("Elevator Sim", m_mech2d);
@@ -84,11 +88,17 @@ public class Elevator implements AutoCloseable {
 
   /** Advance the simulation. */
   public void simulationPeriodic() {
-    m_ElevatorKp = SmartDashboard.getNumber("m_kElevatorKp", m_ElevatorKp);
-    m_ElevatorKi = SmartDashboard.getNumber("m_kElevatorKi", m_ElevatorKi);
-    m_ElevatorKd = SmartDashboard.getNumber("m_kElevatorKd", m_ElevatorKd);
-    m_SetpointMeters = SmartDashboard.getNumber("m_SetpointMeters", m_SetpointMeters);
+
     
+    m_ElevatorKp = Preferences.getDouble("m_ElevatorKp", m_ElevatorKp);
+    m_ElevatorKi = Preferences.getDouble("m_ElevatorKi", m_ElevatorKi);
+    m_ElevatorKd = Preferences.getDouble("m_ElevatorKd", m_ElevatorKd);
+
+  
+    Preferences.setDouble("m_ElevatorKp", m_ElevatorKp);
+    Preferences.setDouble("m_ElevatorKi", m_ElevatorKi);
+    Preferences.setDouble("m_ElevatorKd", m_ElevatorKd);
+
     Error = (m_SetpointMeters - m_encoder.getDistance());
     SmartDashboard.putNumber("Error", Error);
 
@@ -109,6 +119,7 @@ public class Elevator implements AutoCloseable {
         BatterySim.calculateDefaultBatteryLoadedVoltage(m_elevatorSim.getCurrentDrawAmps()));
   }
 
+
   /**
    * Run control loop to reach and maintain goal.
    *
@@ -128,7 +139,7 @@ public class Elevator implements AutoCloseable {
     m_controller.setGoal(0.0);
     m_motor.set(0.0);
   }
-
+  
   /** Update telemetry, including the mechanism visualization. */
   public void updateTelemetry() {
     // Update elevator visualization with position

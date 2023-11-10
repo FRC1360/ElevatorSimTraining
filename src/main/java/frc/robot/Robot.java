@@ -12,9 +12,12 @@ import frc.robot.subsystems.Elevator;
 public class Robot extends TimedRobot {
   private final Joystick m_joystick = new Joystick(Constants.kJoystickPort);
   private final Elevator m_elevator = new Elevator();
+  boolean toggle = false;
+  
 
   @Override
   public void robotInit() {}
+  
 
   @Override
   public void robotPeriodic() {
@@ -32,9 +35,19 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
       // Here, we set the constant setpoint of 0.75 meters.
-      m_elevator.reachGoal(m_elevator.m_SetpointMeters);
+      
+      if (m_joystick.getRawButtonPressed(1)) {
+        if (toggle) {
+           m_elevator.reachGoal(0);
+           toggle = false;
+        } else {
+           m_elevator.reachGoal(m_elevator.m_SetpointMeters);
+           toggle = true;
+        }
+     }
 
   }
+
 
   @Override
   public void disabledInit() {
