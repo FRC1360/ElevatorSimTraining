@@ -37,8 +37,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     vSetpointMeters = SmartDashboard.getNumber("vSetpointMeters", vSetpointMeters);
-    if (exampleXbox.getRawButtonPressed(0)){
+    if (exampleXbox.getRawButtonPressed(1)){
       m_elevator.reachGoal(vSetpointMeters);
+      System.out.println("Function was run");
     }
     else {
       m_elevator.reachGoal(0);
