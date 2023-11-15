@@ -10,6 +10,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
@@ -28,6 +29,9 @@ public class Elevator implements AutoCloseable {
   private final DCMotor m_elevatorGearbox = DCMotor.getVex775Pro(4);
 
   public double m_ElevatorKp = 5;
+  
+
+
   public double m_ElevatorKi = 0;
   public double m_ElevatorKd = 0;
 
@@ -74,6 +78,8 @@ public class Elevator implements AutoCloseable {
     SmartDashboard.putNumber("m_kElevatorKp", m_ElevatorKp);
     SmartDashboard.putNumber("m_kElevatorKi", m_ElevatorKi);
     SmartDashboard.putNumber("m_kElevatorKd", m_ElevatorKd);
+    Preferences.initDouble(Constants.kArmPKey, m_ElevatorKp);
+    
 
     m_encoder.setDistancePerPulse(Constants.kElevatorEncoderDistPerPulse);
 

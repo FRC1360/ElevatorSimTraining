@@ -34,4 +34,5 @@ public class Constants {
   //  = (Pi * D) / ppr
   public static final double kElevatorEncoderDistPerPulse =
       2.0 * Math.PI * kElevatorDrumRadius / 4096;
+  public static final String kArmPKey = "Elevatorkp";
 }
