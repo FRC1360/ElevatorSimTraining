@@ -1,28 +1,10 @@
 {
-  "NTProvider": {
-    "types": {
-      "/FMSInfo": "FMSInfo",
-      "/SmartDashboard/Elevator Sim": "Mechanism2d"
-    }
-  },
   "NetworkTables": {
     "transitory": {
       "FMSInfo": {
         "open": true
       },
       "LiveWindow": {
-        ".status": {
-          "open": true
-        },
-        "open": true
-      },
-      "Shuffleboard": {
-        ".metadata": {
-          "open": true
-        },
-        ".recording": {
-          "open": true
-        },
         "open": true
       },
       "SmartDashboard": {
@@ -37,18 +19,21 @@
         },
         "open": true
       }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Elevator Sim": "Mechanism2d"
     }
   },
-  "Plot": {
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "localhost"
+  },
+  "Plots": {
     "Plot <0>": {
       "plots": [
         {
-          "axis": [
-            {
-              "autoFit": true
-            }
-          ],
-          "height": 299,
+          "height": 259,
           "series": [
             {
               "color": [
