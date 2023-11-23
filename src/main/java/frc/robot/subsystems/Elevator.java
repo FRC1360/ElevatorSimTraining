@@ -88,7 +88,7 @@ public class Elevator implements AutoCloseable {
     m_ElevatorKi = SmartDashboard.getNumber("m_kElevatorKi", m_ElevatorKi);
     m_ElevatorKd = SmartDashboard.getNumber("m_kElevatorKd", m_ElevatorKd);
 
-    m_controller.setP(m_ElevatorKp);
+    m_controller.setP(m_ElevatorKd);
     m_controller.setI(m_ElevatorKi);
     m_controller.setD(m_ElevatorKd);
 
